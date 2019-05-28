@@ -1,1 +1,1 @@
-# opensciencemooc-follower
+# opensciencemooc-followers
