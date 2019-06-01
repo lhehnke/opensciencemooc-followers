@@ -1,0 +1,1297 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Analyzing the Open Science MOOC Twitter community},
+            pdfauthor={Lisa Hehnke; dataplanes.org \textbar{} @DataPlanes},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Analyzing the Open Science MOOC Twitter community}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Lisa Hehnke \\ dataplanes.org \textbar{} @DataPlanes}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{01 June, 2019}
+
+
+\begin{document}
+\maketitle
+
+\subsection{Introduction}\label{introduction}
+
+As of lately, several friends of mine tried to convince me to resume
+writing and this was when I remembered that I apparently once thought so
+as well when creating this blog. One of those friends happened to be
+\href{http://fossilsandshit.com/}{Jon Tennant}, dinosaur whisperer from
+Brexit land and founder of the \href{https://opensciencemooc.eu/}{Open
+Science MOOC}.
+
+In case you have never heard of it, the Open Science MOOC is a free
+massive open online course hosted on
+\href{https://eliademy.com/opensciencemooc}{Eliademy}. It aims to equip
+students and researchers with the skills they need to excel in a modern
+research environment based on Open Science - that is, the broad adoption
+of good scientific practices as a fundamental and essential part of the
+research process. The Open MOOC brings together the efforts and
+resources of hundreds of researchers and practitioners who have all
+dedicated their time and experience to create a welcoming and supporting
+community platform.
+
+Along with almost 700 \href{https://openmooc-ers.slack.com/}{Slack}
+members, we are currently working on a new module on
+\href{https://github.com/OpenScienceMOOC/Module-6-Open-Access-to-Research-Papers}{Open
+Access}. While the other Open MOOC-ers are busy collecting resources and
+setting learning outcomes, I wanted to contribute with what I can do
+best (other than
+\href{https://twitter.com/DataPlanes/status/1131308854258610176}{building
+dinosaur kits for children}): Analyzing them. Because analyzing people
+is what you do when you like them, right? Is that just me? OK, fair
+enough.
+
+After realizing that a) I could not get my hands on our Slack analytics
+due to the free plan and b) being inspired by Shirin Glander's awesome
+\href{https://shiring.github.io/text_analysis/2017/06/28/twitter_post}{blog
+post} on characterizing her own Twitter followers, I decided to collect
+data on all friends and followers of the Open Science MOOC's official
+\href{https://twitter.com/opensciencemooc}{Twitter account}.
+
+In this blog post, I am now going to analyze this data in order to
+answer the following questions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Is there an overlap between the Open Science MOOC's Twitter followers
+  and friends? Who should be immediately unfollowed for not following
+  back?*
+\item
+  Where are the Open Science MOOC's twitter followers based? Is there
+  any evidence for a geographically concentrated Open Science Twitter
+  bubble?
+\item
+  What about diversity among the followers? Does the Open Science MOOC
+  keep its promise of being an inclusive and diverse platform?
+\item
+  Who are the most influential and active followers? Could they
+  potentially start a revolution, take over the Twitter community, and
+  throw Jon off the Open Science throne?
+\item
+  What do the followers state in their own profile descriptions? Which
+  institutions are they affiliated with? Which opinions do they express?
+  And last but certainly not least: Do their own texts say anything
+  meaningful about the interests and research activities of the Open
+  Science Twitter MOOC-ers (spoiler alert: yes)?
+\end{enumerate}
+
+\emph{*Just kidding, of course I skipped this part. But make sure to
+follow the Open Science MOOC, one never knows what the future might
+bring\ldots{} Just kidding again.}
+
+\subsection{Collecting Twitter data}\label{collecting-twitter-data}
+
+As the old saying goes, every analysis needs its data. While I generally
+prefer Mike Kearney's \texttt{rtweet} over \texttt{twitteR} for scraping
+Twitter data these days, I used the latter for collecting data on all of
+the N = 5764 followers and N = 4924 friends, i.e.~followed accounts, of
+the Open Science MOOC. The data for this analysis was last retrieved on
+May 29, 2019.
+
+And while \texttt{ggplot2} - especially when combined with
+\texttt{ggthemes} - comes with beautiful themes by default, I most often
+cannot resist to create a custom theme for each project. With the colour
+scheme below, I tried to match the visual appearance of Shirin's
+follower analysis. And yes, it would have been easier, albeit less fun,
+if I had followed her example and simply used \texttt{tidyquant}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Set directory}
+\NormalTok{MAIN_DIR <-}\StringTok{ }\NormalTok{rprojroot}\OperatorTok{::}\KeywordTok{find_rstudio_root_file}\NormalTok{()}
+
+\CommentTok{# Install and load packages using pacman}
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{require}\NormalTok{(}\StringTok{"pacman"}\NormalTok{)) }\KeywordTok{install.packages}\NormalTok{(}\StringTok{"pacman"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(pacman)}
+
+\KeywordTok{p_load}\NormalTok{(genderizeR, ggraph, igraph, leaflet, magrittr, maps, reshape2, SnowballC, tidytext, }
+\NormalTok{       tidyverse, tmaptools, twitteR, wordcloud, wordcloud2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   There is a binary version available but the source version is
+##   later:
+##         binary source needs_compilation
+## openssl    1.3    1.4              TRUE
+## 
+##   Binaries will be installed
+## package 'sys' successfully unpacked and MD5 sums checked
+## package 'askpass' successfully unpacked and MD5 sums checked
+## package 'curl' successfully unpacked and MD5 sums checked
+## package 'openssl' successfully unpacked and MD5 sums checked
+## package 'R6' successfully unpacked and MD5 sums checked
+## package 'NLP' successfully unpacked and MD5 sums checked
+## package 'slam' successfully unpacked and MD5 sums checked
+## package 'xml2' successfully unpacked and MD5 sums checked
+## package 'BH' successfully unpacked and MD5 sums checked
+## package 'httr' successfully unpacked and MD5 sums checked
+## package 'tm' successfully unpacked and MD5 sums checked
+## package 'data.table' successfully unpacked and MD5 sums checked
+## package 'genderizeR' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## 
+##   There is a binary version available but the source version is
+##   later:
+##        binary source needs_compilation
+## tibble  2.1.1  2.1.2              TRUE
+## 
+##   Binaries will be installed
+## package 'zeallot' successfully unpacked and MD5 sums checked
+## package 'utf8' successfully unpacked and MD5 sums checked
+## package 'vctrs' successfully unpacked and MD5 sums checked
+## package 'cli' successfully unpacked and MD5 sums checked
+## package 'crayon' successfully unpacked and MD5 sums checked
+## package 'fansi' successfully unpacked and MD5 sums checked
+## package 'pillar' successfully unpacked and MD5 sums checked
+## package 'purrr' successfully unpacked and MD5 sums checked
+## package 'farver' successfully unpacked and MD5 sums checked
+## package 'colorspace' successfully unpacked and MD5 sums checked
+## package 'lazyeval' successfully unpacked and MD5 sums checked
+## package 'reshape2' successfully unpacked and MD5 sums checked
+## package 'rlang' successfully unpacked and MD5 sums checked
+## package 'tibble' successfully unpacked and MD5 sums checked
+## package 'viridisLite' successfully unpacked and MD5 sums checked
+## package 'withr' successfully unpacked and MD5 sums checked
+## package 'assertthat' successfully unpacked and MD5 sums checked
+## package 'pkgconfig' successfully unpacked and MD5 sums checked
+## package 'tidyselect' successfully unpacked and MD5 sums checked
+## package 'plogr' successfully unpacked and MD5 sums checked
+## package 'tweenr' successfully unpacked and MD5 sums checked
+## package 'polyclip' successfully unpacked and MD5 sums checked
+## package 'RcppEigen' successfully unpacked and MD5 sums checked
+## package 'labeling' successfully unpacked and MD5 sums checked
+## package 'munsell' successfully unpacked and MD5 sums checked
+## package 'RColorBrewer' successfully unpacked and MD5 sums checked
+## package 'gridExtra' successfully unpacked and MD5 sums checked
+## package 'ggplot2' successfully unpacked and MD5 sums checked
+## package 'dplyr' successfully unpacked and MD5 sums checked
+## package 'plyr' successfully unpacked and MD5 sums checked
+## package 'ggforce' successfully unpacked and MD5 sums checked
+## package 'igraph' successfully unpacked and MD5 sums checked
+## package 'scales' successfully unpacked and MD5 sums checked
+## package 'gtable' successfully unpacked and MD5 sums checked
+## package 'ggrepel' successfully unpacked and MD5 sums checked
+## package 'viridis' successfully unpacked and MD5 sums checked
+## package 'ggraph' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'httpuv' successfully unpacked and MD5 sums checked
+## package 'xtable' successfully unpacked and MD5 sums checked
+## package 'sourcetools' successfully unpacked and MD5 sums checked
+## package 'later' successfully unpacked and MD5 sums checked
+## package 'promises' successfully unpacked and MD5 sums checked
+## package 'shiny' successfully unpacked and MD5 sums checked
+## package 'crosstalk' successfully unpacked and MD5 sums checked
+## package 'htmlwidgets' successfully unpacked and MD5 sums checked
+## package 'png' successfully unpacked and MD5 sums checked
+## package 'raster' successfully unpacked and MD5 sums checked
+## package 'sp' successfully unpacked and MD5 sums checked
+## package 'leaflet' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'maps' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'SnowballC' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'generics' successfully unpacked and MD5 sums checked
+## package 'tidyr' successfully unpacked and MD5 sums checked
+## package 'ISOcodes' successfully unpacked and MD5 sums checked
+## package 'hunspell' successfully unpacked and MD5 sums checked
+## package 'broom' successfully unpacked and MD5 sums checked
+## package 'tokenizers' successfully unpacked and MD5 sums checked
+## package 'janeaustenr' successfully unpacked and MD5 sums checked
+## package 'stopwords' successfully unpacked and MD5 sums checked
+## package 'tidytext' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'ps' successfully unpacked and MD5 sums checked
+## package 'rematch' successfully unpacked and MD5 sums checked
+## package 'prettyunits' successfully unpacked and MD5 sums checked
+## package 'processx' successfully unpacked and MD5 sums checked
+## package 'DBI' successfully unpacked and MD5 sums checked
+## package 'ellipsis' successfully unpacked and MD5 sums checked
+## package 'clipr' successfully unpacked and MD5 sums checked
+## package 'cellranger' successfully unpacked and MD5 sums checked
+## package 'progress' successfully unpacked and MD5 sums checked
+## package 'callr' successfully unpacked and MD5 sums checked
+## package 'fs' successfully unpacked and MD5 sums checked
+## package 'whisker' successfully unpacked and MD5 sums checked
+## package 'selectr' successfully unpacked and MD5 sums checked
+## package 'dbplyr' successfully unpacked and MD5 sums checked
+## package 'forcats' successfully unpacked and MD5 sums checked
+## package 'haven' successfully unpacked and MD5 sums checked
+## package 'hms' successfully unpacked and MD5 sums checked
+## package 'lubridate' successfully unpacked and MD5 sums checked
+## package 'modelr' successfully unpacked and MD5 sums checked
+## package 'readr' successfully unpacked and MD5 sums checked
+## package 'readxl' successfully unpacked and MD5 sums checked
+## package 'reprex' successfully unpacked and MD5 sums checked
+## package 'rstudioapi' successfully unpacked and MD5 sums checked
+## package 'rvest' successfully unpacked and MD5 sums checked
+## package 'tidyverse' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## 
+##   There is a binary version available but the source version is
+##   later:
+##       binary source needs_compilation
+## rgdal  1.4-3  1.4-4              TRUE
+## 
+##   Binaries will be installed
+## package 'e1071' successfully unpacked and MD5 sums checked
+## package 'sf' successfully unpacked and MD5 sums checked
+## package 'lwgeom' successfully unpacked and MD5 sums checked
+## package 'units' successfully unpacked and MD5 sums checked
+## package 'rgdal' successfully unpacked and MD5 sums checked
+## package 'rgeos' successfully unpacked and MD5 sums checked
+## package 'classInt' successfully unpacked and MD5 sums checked
+## package 'dichromat' successfully unpacked and MD5 sums checked
+## package 'XML' successfully unpacked and MD5 sums checked
+## package 'tmaptools' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'bit' successfully unpacked and MD5 sums checked
+## package 'bit64' successfully unpacked and MD5 sums checked
+## package 'rjson' successfully unpacked and MD5 sums checked
+## package 'twitteR' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'wordcloud' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+## package 'wordcloud2' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\jonte\AppData\Local\Temp\RtmpArkdPY\downloaded_packages
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Get information on Open Science MOOC}
+\NormalTok{osci_mooc <-}\StringTok{ }\KeywordTok{getUser}\NormalTok{(}\StringTok{"opensciencemooc"}\NormalTok{)}
+
+\CommentTok{# Retrieve followers' profile data}
+\NormalTok{osci_followers <-}\StringTok{ }\NormalTok{osci_mooc}\OperatorTok{$}\KeywordTok{getFollowers}\NormalTok{()}
+\NormalTok{followers_df <-}\StringTok{ }\KeywordTok{twListToDF}\NormalTok{(osci_followers)}
+
+\CommentTok{# Retrieve friends' profile data}
+\NormalTok{osci_friends <-}\StringTok{ }\NormalTok{osci_mooc}\OperatorTok{$}\KeywordTok{getFriends}\NormalTok{()}
+\NormalTok{friends_df <-}\StringTok{ }\KeywordTok{twListToDF}\NormalTok{(osci_friends)}
+
+\CommentTok{# Export data}
+\KeywordTok{saveRDS}\NormalTok{(followers_df, }\StringTok{"opensciencemooc_followers.rds"}\NormalTok{)}
+\KeywordTok{saveRDS}\NormalTok{(friends_df, }\StringTok{"opensciencemooc_friends.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Import Twitter data}
+\NormalTok{data_df <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\DataTypeTok{file =} \KeywordTok{paste}\NormalTok{(MAIN_DIR,}\StringTok{"opensciencemooc_followers.rds"}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"/"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viz_theme <-}\StringTok{ }\KeywordTok{theme}\NormalTok{(}
+  \DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#2c3e50"}\NormalTok{),}
+  \DataTypeTok{axis.text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#2c3e50"}\NormalTok{),}
+  \DataTypeTok{axis.ticks =} \KeywordTok{element_line}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#85a0bc"}\NormalTok{),}
+  \DataTypeTok{legend.key =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"transparent"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{), }
+  \DataTypeTok{panel.border =} \KeywordTok{element_blank}\NormalTok{(),}
+  \DataTypeTok{panel.background =} \KeywordTok{element_blank}\NormalTok{(),}
+  \DataTypeTok{panel.grid.major =} \KeywordTok{element_blank}\NormalTok{(),}
+  \DataTypeTok{panel.grid.minor =} \KeywordTok{element_blank}\NormalTok{(),}
+  \DataTypeTok{plot.caption =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#3e5871"}\NormalTok{),}
+  \DataTypeTok{strip.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{),}
+  \DataTypeTok{strip.text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size =} \KeywordTok{rel}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
+  \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"#2c3e50"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Friend or follow?}\label{friend-or-follow}
+
+For starters, we can get a simple overview of the total number of
+friends, followers, and accounts who are friends as well as followers.
+As can be easily derived from the publicly available statistics on
+Twitter, the Open Science MOOC account obviously has more followers than
+friends. Interestingly though, there is quite a large number of accounts
+the MOOC follows but that do not follow back in return. Yet, over 2000
+out of N = 8638 accounts in total are both friends and followers at the
+same time.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Import data on friends and merge}
+\NormalTok{friends_df <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\DataTypeTok{file =} \KeywordTok{paste}\NormalTok{(MAIN_DIR,}\StringTok{"opensciencemooc_friends.rds"}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"/"}\NormalTok{))}
+
+\NormalTok{relations_df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{mutate}\NormalTok{(data_df, }\DataTypeTok{relation =} \KeywordTok{ifelse}\NormalTok{(screenName }\OperatorTok{%in%}\StringTok{ }\NormalTok{friends_df}\OperatorTok{$}\NormalTok{screenName, }\StringTok{"both"}\NormalTok{, }\StringTok{"follower"}\NormalTok{)),}
+                              \KeywordTok{mutate}\NormalTok{(friends_df, }\DataTypeTok{relation =} \KeywordTok{ifelse}\NormalTok{(screenName }\OperatorTok{%in%}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{screenName, }\StringTok{"both"}\NormalTok{, }\StringTok{"friend"}\NormalTok{))) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{distinct}\NormalTok{()}
+
+\CommentTok{# Plot relations}
+\NormalTok{relations_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ relation, }\DataTypeTok{fill =}\NormalTok{ relation)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_manual}\NormalTok{(}\StringTok{" "}\NormalTok{, }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#6c7a89"}\NormalTok{, }\StringTok{"#2C3E50"}\NormalTok{, }\StringTok{"#22313f"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Friend & follower"}\NormalTok{, }\StringTok{"Follower"}\NormalTok{, }\StringTok{"Friend"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{4000}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Count of Open Science MOOC Twitter followers & friends"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/friends-followers-1} \end{center}
+
+\subsection{Locating the Twitter
+bubble}\label{locating-the-twitter-bubble}
+
+After thois first overview of the Open MOOC-ers Twitter community, let
+us dive deeper into the whereabouts of the followers. For this purpose,
+we can use the locations users provide in their Twitter profiles. Not
+all of the followers did this, but the available information proves to
+be sufficient for a reasonably accurate overview.
+
+Prior to mapping the locations, however, the unstructured text data
+needed some basic cleaning by removing mentions, hashtags, and strings
+either consisting of only one character or containing numbers. In
+addition, I removed all punctuation except for commas, since locations,
+if specified correctly (sorry to disappoint you, Jon, \emph{Jurassic
+Park} is not a valid location yet), are displayed in the \emph{city,
+country} format. Lastly, I trimmed both leading and trailing whitespace
+and converted the preprocessed locations to lower case.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Clean location}
+\NormalTok{## Note: Code removes locations consisting of non-ASCII characters.}
+\NormalTok{data_df }\OperatorTok{%<>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"#}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{, }\StringTok{""}\NormalTok{, location)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove hashtags}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"@}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{, }\StringTok{""}\NormalTok{, location_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove mentions}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"[^[:alnum:][:space:]}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{,]"}\NormalTok{, }\StringTok{""}\NormalTok{, location_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove punctuation except for commas}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{trimws}\NormalTok{(}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w*[0-9]+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w*}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, location_clean))) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove words containing numbers}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{" *}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{b[[:alpha:]]\{1\}}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{b *"}\NormalTok{, }\StringTok{" "}\NormalTok{, location_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove one letter words}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{str_trim}\NormalTok{(location_clean, }\DataTypeTok{side =} \StringTok{"both"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove whitespace}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^[[:punct:]].*"}\NormalTok{, }\StringTok{""}\NormalTok{, location_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove strings starting with comma(s)}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{location_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^$"}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\KeywordTok{trimws}\NormalTok{(location_clean))) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# replace blank cells with NA}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{city_clean =} \KeywordTok{str_extract}\NormalTok{(location_clean, }\StringTok{"[^,]+"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# extract string before first comma}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{city_clean =} \KeywordTok{tolower}\NormalTok{(city_clean))}
+\end{Highlighting}
+\end{Shaded}
+
+The following plot shows the top locations the Open Science MOOC-ers
+claimed to be from, after extracting the name of the city from the
+string and removing unspecific locations like \emph{europe} or
+\emph{uk}. Among the remaining locations are multiple European capital
+cities, including London, Berlin, Paris, Amsterdam, and Stockholm as
+well as large US-American and Canadian cities such as New York,
+Washington, Boston, Toronto or Montréal. Also on the list is Barcelona,
+a city know for its far-reaching
+\href{https://opendata-ajuntament.barcelona.cat/en/open-data-bcn}{open
+data policy}. However, almost all of the frequently mentioned locations
+are located in either Western Europe or North America, with Sydney and
+Melbourne being the Australian exceptions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Remove unspecific locations}
+\StringTok{"%notin%"}\NormalTok{ <-}\StringTok{ }\KeywordTok{Negate}\NormalTok{(}\StringTok{"%in%"}\NormalTok{)}
+\NormalTok{locations_rm <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"uk"}\NormalTok{, }\StringTok{"europe"}\NormalTok{) }
+
+\CommentTok{# Plot followers' top locations}
+\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(city_clean)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(city_clean }\OperatorTok{%notin%}\StringTok{ }\NormalTok{locations_rm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(city_clean, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{city_clean =} \KeywordTok{reorder}\NormalTok{(city_clean, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(city_clean, n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Top locations of Open Science Twitter MOOC-ers"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/locations-1} \end{center}
+
+To investigate this interesting finding further, I geocoded all
+available locations using the
+\href{https://wiki.openstreetmap.org/wiki/Nominatim}{OpenStreetMap
+Nominatim} API. The \texttt{geocode\_OSM()} function of the
+\texttt{tmaptools} package is one of the available options for geocoding
+a location to its coordinates; alternatives are \texttt{ggmap} or
+\texttt{opencage}. When setting \texttt{as.data.frame\ =\ TRUE},
+\texttt{geocode\_OSM()} returns a data frame containing the latitude and
+longitude of each location. After obtaining the results, I removed both
+unspecific (e.g.~administrative boundaries) and overly specific
+locations (e.g.~localities or amenities) by filtering all observations
+that match the \texttt{type\ ==\ city} condition.
+
+Fun fact: \texttt{NA}, which indicates missing values in R, apparently
+translates to \emph{Norge, Ytterbyvegen, Namsos, Trøndelag, 7810, Norge}
+when geocoding it with OpenStreetMap Nominatim. For a brief moment, I
+was beyond excited to discover a hidden tribe of Open Science MOOC-ers
+in this small Norwegian town with oh so beautiful fjords and mountains,
+but no, this was nothing but a false positive.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Geocode cleaned locations and save results}
+\NormalTok{locations_geo <-}\StringTok{ }\KeywordTok{geocode_OSM}\NormalTok{(data_df}\OperatorTok{$}\NormalTok{location_clean, }\DataTypeTok{as.data.frame =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{details =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{saveRDS}\NormalTok{(locations_geo, }\StringTok{"locations_geocoded.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Import geocoded data}
+\NormalTok{locations_geo <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\DataTypeTok{file =} \KeywordTok{paste}\NormalTok{(MAIN_DIR,}\StringTok{"locations_geocoded.rds"}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"/"}\NormalTok{))}
+
+\CommentTok{# Clean and merge data}
+\NormalTok{locations_df <-}\StringTok{ }\NormalTok{locations_geo }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{rename}\NormalTok{(}\DataTypeTok{location_clean =}\NormalTok{ query) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{vars}\NormalTok{(lat, lon), }\KeywordTok{list}\NormalTok{(}\OperatorTok{~}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(type }\OperatorTok{!=}\StringTok{ "city"}\NormalTok{, }\OtherTok{NA}\NormalTok{, .))) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{display_name =} \KeywordTok{replace}\NormalTok{(display_name, display_name }\OperatorTok{==}\StringTok{ "Norge, Ytterbyvegen, Namsos, Trøndelag, 7810, Norge"}\NormalTok{, }\OtherTok{NA}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(location_clean, display_name, lat, lon)}
+  
+\NormalTok{data_df }\OperatorTok{%<>%}
+\StringTok{  }\KeywordTok{left_join}\NormalTok{(locations_df, }\DataTypeTok{by =} \StringTok{"location_clean"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{distinct}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+After eliminating our fake Norwegian community members, OpenStreetMap
+Nominatim was able to correctly geocode N = 2221 user-provided locations
+of the Open Science MOOC followers.
+
+The static map below confirms the results of the previous analysis. Most
+followers who provided a geocodable location tend to be clustered in
+larger cities in Western Europe and North America. While the map
+corroborates the idea of a geographically restricted Open Science
+Twitter bubble, it does not for inferences on what causes this pattern.
+Potential explanations for this finding could be that users in certain
+areas such as China have no legal access to Twitter, prefer other online
+communication platforms or have an actual lack of interest in or
+knowledge about Open Science.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Get world map}
+\NormalTok{map_world <-}\StringTok{ }\KeywordTok{map_data}\NormalTok{(}\StringTok{"world"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(region }\OperatorTok{!=}\StringTok{ "Antarctica"}\NormalTok{)}
+
+\CommentTok{# Plot followers' locations}
+\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_polygon}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ map_world, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ long, }\DataTypeTok{y =}\NormalTok{ lat, }\DataTypeTok{group =}\NormalTok{ group), }\DataTypeTok{colour =} \StringTok{"gray85"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"gray80"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data_df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lon, }\DataTypeTok{y =}\NormalTok{ lat), }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Locations of Open Science Twitter MOOC-ers"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Profile locations geocoded with OpenStreetMap Nominatim (N = 2221)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_equal}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.text =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.title =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.ticks =} \KeywordTok{element_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/locations-static-map1-1} \end{center}
+
+In a slightly more advanced version of this map, I added further
+information on the follower count of the geocoded users, which results
+in a similar picture: The majority of the influential Open Science
+Twitter MOOC-ers are based in Western Europe and the United States. I
+will revisit this notion later on in the blog post when conducting a
+more fine-grained analysis of the most prominent followers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot followers' location relative to followers' followers count}
+\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_polygon}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ map_world, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ long, }\DataTypeTok{y =}\NormalTok{ lat, }\DataTypeTok{group =}\NormalTok{ group), }\DataTypeTok{colour =} \StringTok{"gray85"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"gray80"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data_df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lon, }\DataTypeTok{y =}\NormalTok{ lat, }\DataTypeTok{size =}\NormalTok{ followersCount), }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Locations of Open Science Twitter MOOC-ers"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Marker sizes relative to followers' followers counts (N = 2220)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_size_continuous}\NormalTok{(}\DataTypeTok{range =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{6}\NormalTok{), }\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{300000}\NormalTok{),}
+                        \DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{10000}\NormalTok{, }\DecValTok{100000}\NormalTok{, }\DecValTok{200000}\NormalTok{, }\DecValTok{300000}\NormalTok{), }
+                        \DataTypeTok{labels =} \ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{format}\NormalTok{(x, }\DataTypeTok{scientific =} \OtherTok{FALSE}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{size =} \StringTok{"Number of followers' followers"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_equal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{, }
+                    \DataTypeTok{axis.line =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.text =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.title =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.ticks =} \KeywordTok{element_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/locations-static-map2-1} \end{center}
+
+The static maps above can be supplemented by creating an interactive map
+using \texttt{leaflet}, which allows to zoom into all areas and take a
+closer look at specific countries and regions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot followers' locations using leaflet}
+\KeywordTok{leaflet}\NormalTok{(data_df, }\DataTypeTok{width =} \StringTok{"100%"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{addProviderTiles}\NormalTok{(}\StringTok{"CartoDB.DarkMatter"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{addCircleMarkers}\NormalTok{(}\OperatorTok{~}\NormalTok{lon,}
+                   \OperatorTok{~}\NormalTok{lat,}
+                   \DataTypeTok{color =} \StringTok{"#9eb4ca"}\NormalTok{,}
+                   \DataTypeTok{radius =} \FloatTok{1.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-3a90feb9eef4ce658233}{}
+
+\subsection{Diversity and inclusion}\label{diversity-and-inclusion}
+
+After tracking down their locations, I was interested in the gender
+diversity of the Open Science MOOC followers since one of its objectives
+is to be an inclusive and welcoming platform for people of all colors
+and genders.
+
+``How does this work with Twitter data where no information on users'
+genders is available?'' you might ask. A while ago I worked on a project
+using bibliometric data to analyze gender differences in computational
+social science publications (that in the end sadly never saw the light
+of the day) and stumbled upon
+\href{https://genderize.io/}{genderize.io}. Their API draws on a
+database containing over 200,000 distinct names from 79 countries and 89
+languages which were obtained from user profiles across various social
+networks to determine people's gender based on their first name. While
+this approach only allows for qualified guesses rather than perfectly
+robust results, it still provides a rough estimate of the gender
+distribution among the Open Science MOOC-ers.
+
+Before determining each followers gender, I preprocessed all names by
+again removing hashtags, mentions, punctuation, numbers, and non-ASCII
+characters - yes, people on Twitter are amazingly creative when it comes
+to their online identities - as well as academic titles such as Dr, PhD
+or Prof.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Clean name and split name into first and last name}
+\NormalTok{## Note: Names consisting of non-ASCII characters are removed.}
+\NormalTok{data_df }\OperatorTok{%<>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"#}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{, }\StringTok{""}\NormalTok{, name)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"@}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"[^}\CharTok{\textbackslash{}x01}\StringTok{-}\CharTok{\textbackslash{}x7F}\StringTok{]"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove non-ASCII characters}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"[^[:alnum:][:space:]}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{-]"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^[[:punct:]]"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{trimws}\NormalTok{(}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w*[0-9]+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w*}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean))) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{" *}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{b[[:alpha:]]\{1\}}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{b *"}\NormalTok{, }\StringTok{" "}\NormalTok{, name_clean)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"Dr}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean), }\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"PhD}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean), }
+         \DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"Prof}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean), }\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"MSc}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean), }
+         \DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"MA}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean), }\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"MD}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, name_clean)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{str_trim}\NormalTok{(name_clean, }\DataTypeTok{side =} \StringTok{"both"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{name_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^$"}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\KeywordTok{trimws}\NormalTok{(name_clean))) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{separate}\NormalTok{(name_clean, }\KeywordTok{c}\NormalTok{(}\StringTok{"first_name"}\NormalTok{, }\StringTok{"last_name"}\NormalTok{), }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{, }\DataTypeTok{remove =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Prior to predicting the Open Science MOOC followers' genders with
+\texttt{genderizeR} - a package accesses the genderize.io API from
+within R - I drew a random sample of N = 1000 followers with non-missing
+first names as the free API is limited to classifying 1000 names per
+day.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Draw random sample of followers}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{df_sample <-}\StringTok{ }\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(first_name)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_n}\NormalTok{(}\DecValTok{1000}\NormalTok{)}
+
+\CommentTok{# Predict and genderize names}
+\NormalTok{givenNames <-}\StringTok{ }\KeywordTok{findGivenNames}\NormalTok{(df_sample}\OperatorTok{$}\NormalTok{first_name, }\DataTypeTok{progress =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{followers_gender <-}\StringTok{ }\KeywordTok{genderize}\NormalTok{(df_sample}\OperatorTok{$}\NormalTok{first_name, }\DataTypeTok{genderDB =}\NormalTok{ givenNames, }\DataTypeTok{progress =} \OtherTok{FALSE}\NormalTok{)}
+
+\CommentTok{# Export data}
+\KeywordTok{saveRDS}\NormalTok{(followers_gender, }\StringTok{"followers_gender.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The following plot shows the gender demographics of the sampled
+followers. The genderize.io API confidently classified 403 first names
+as male and 381 as female. 216 names could not be classified and thus
+resulted in missing values. Hence, there tend to be slightly more male
+than female followers, but overall it is pretty balanced.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Import genderized data}
+\NormalTok{followers_gender <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\DataTypeTok{file =} \KeywordTok{paste}\NormalTok{(MAIN_DIR,}\StringTok{"followers_gender.rds"}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"/"}\NormalTok{))}
+
+\CommentTok{# Merge with main data frame and change gender for "NA" to NA}
+\NormalTok{data_df }\OperatorTok{%<>%}\StringTok{ }
+\StringTok{  }\KeywordTok{left_join}\NormalTok{(followers_gender, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"first_name"}\NormalTok{ =}\StringTok{ "text"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{genderIndicators) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{gender =} \KeywordTok{replace}\NormalTok{(gender, gender }\OperatorTok{==}\StringTok{ "NA"}\NormalTok{, }\OtherTok{NA}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{distinct}\NormalTok{()}
+
+\CommentTok{# Plot gender distribution using genderized data}
+\NormalTok{followers_gender }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{gender =} \KeywordTok{replace}\NormalTok{(gender, gender }\OperatorTok{==}\StringTok{ "NA"}\NormalTok{, }\OtherTok{NA}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(gender)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ gender, }\DataTypeTok{fill =}\NormalTok{ gender)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_manual}\NormalTok{(}\StringTok{" "}\NormalTok{, }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#6c7a89"}\NormalTok{, }\StringTok{"#22313f"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Female"}\NormalTok{, }\StringTok{"Male"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Count of Open Science Twitter MOOC-ers by gender"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Gender predicted with genderize.io (random sample of N = 1000 followers)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/gender-1} \end{center}
+
+To get a better picture of how inclusive the Open Science MOOC Twitter
+community is, I additionally classified all followers based on their
+respective account status. This approach was adapted from a blog post on
+\href{https://correlaid.org/blog/we2-twitter-analysis/}{analyzing social
+movements on Twitter} that I co-wrote with my fellow CorrelAider
+\href{http://konstantin.gavras.de/}{Konstantin Gavras} for the European
+elections in May 2019.
+
+All followers of the Open Science MOOC were classified as follows: 1.
+Verified account: Account is officially verified by Twitter (i.e.~of
+public interest) 2. Influencer: Account has at least 500 followers and
+at least thrice as many followers than friends 3- Verified influencer:
+Account is both officially verified and classified as an influencer 4.
+Personal account: Account is neither verified nor classified as an
+influencer
+
+As can be seen in the plot below, most accounts are unverified personal
+ones, making the Open Science MOOC Twitter community a very inclusive
+digital space.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Add influencer status}
+\NormalTok{## Approach adapted from https://correlaid.org/blog/we2-twitter-analysis/.}
+\NormalTok{data_df}\OperatorTok{$}\NormalTok{influencer <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(data_df}\OperatorTok{$}\NormalTok{followersCount }\OperatorTok{>=}\StringTok{ }\DecValTok{500} \OperatorTok{&}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{followersCount }\OperatorTok{>=}\StringTok{ }\DecValTok{3} \OperatorTok{*}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{friendsCount, }\StringTok{'YES'}\NormalTok{, }\StringTok{'NO'}\NormalTok{)}
+
+\CommentTok{# Classify accounts into differenct user categories based on verification status and influencer status}
+\NormalTok{data_df}\OperatorTok{$}\NormalTok{category <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(data_df}\OperatorTok{$}\NormalTok{verified }\OperatorTok{==}\StringTok{ }\OtherTok{FALSE} \OperatorTok{&}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{influencer }\OperatorTok{==}\StringTok{ 'YES'}\NormalTok{, }\StringTok{'influencer'}\NormalTok{,}
+                           \KeywordTok{ifelse}\NormalTok{(data_df}\OperatorTok{$}\NormalTok{verified }\OperatorTok{==}\StringTok{ }\OtherTok{TRUE} \OperatorTok{&}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{influencer }\OperatorTok{==}\StringTok{ 'NO'}\NormalTok{, }\StringTok{'verified'}\NormalTok{,}
+                                  \KeywordTok{ifelse}\NormalTok{(data_df}\OperatorTok{$}\NormalTok{verified }\OperatorTok{==}\StringTok{ }\OtherTok{TRUE} \OperatorTok{&}\StringTok{ }\NormalTok{data_df}\OperatorTok{$}\NormalTok{influencer }\OperatorTok{==}\StringTok{ 'YES'}\NormalTok{, }\StringTok{'verified_influencer'}\NormalTok{, }\StringTok{'personal'}\NormalTok{)))}
+
+\CommentTok{# Plot number of accounts by status category}
+\NormalTok{## Credits: Colors taken from https://www.colorcombos.com/color-schemes/554/ColorCombo554.html.}
+\NormalTok{data_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(screenName, category) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{unique}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ category, }\DataTypeTok{fill =}\NormalTok{ category)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_manual}\NormalTok{(}\StringTok{" "}\NormalTok{, }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#C0392B"}\NormalTok{, }\StringTok{"#2C3E50"}\NormalTok{, }\StringTok{"#16A085"}\NormalTok{, }\StringTok{"#F1C40F"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Influencer"}\NormalTok{, }\StringTok{"Personal account"}\NormalTok{, }\StringTok{"Verified account"}\NormalTok{, }\StringTok{"Verified influencer"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{'Number of Open Science Twitter MOOC-ers by account status'}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Influencer: at least 500 followers and at least thrice as many followers than friends }\CharTok{\textbackslash{}n}\StringTok{Verified: official verification status"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{6000}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/account-status-1} \end{center}
+
+\subsection{Followers or leaders?}\label{followers-or-leaders}
+
+Now that we have seen that there are only few verified accounts and
+influencers being part of the community, who are the followers with the
+largest follower base? Here you have an overview of the most influential
+Open Science MOOC-ers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most influential followers}
+\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, followersCount) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{screenName =} \KeywordTok{reorder}\NormalTok{(screenName, followersCount)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(screenName, followersCount, }\DataTypeTok{label =}\NormalTok{ followersCount)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most influential Open Science MOOC-ers"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Followers count"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{labels =} \ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{format}\NormalTok{(x, }\DataTypeTok{scientific =} \OtherTok{FALSE}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/influential-followers-1} \end{center}
+
+To get a more detailed picture, let us also have a look at the most
+active followers. Here, I followed Shirin's example and normalized the
+number of statuses, meaning tweets and retweets, each account shared by
+the number of days the account existed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Calculate each follower's average number of tweets per day}
+\NormalTok{## Approach adapted from https://shiring.github.io/text_analysis/2017/06/28/twitter_post.}
+\NormalTok{data_df }\OperatorTok{%<>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{created_date =} \KeywordTok{as.Date}\NormalTok{(created, }\DataTypeTok{format =} \StringTok{"%Y-%m-%d"}\NormalTok{),}
+         \DataTypeTok{today =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"2019-05-28"}\NormalTok{, }\DataTypeTok{format =} \StringTok{"%Y-%m-%d"}\NormalTok{),}
+         \DataTypeTok{days =} \KeywordTok{as.numeric}\NormalTok{(today }\OperatorTok{-}\StringTok{ }\NormalTok{created_date),}
+         \DataTypeTok{statuses_day =}\NormalTok{ statusesCount }\OperatorTok{/}\StringTok{ }\NormalTok{days) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{today)}
+
+\CommentTok{# Plot most active followers}
+\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, statuses_day) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{screenName =} \KeywordTok{reorder}\NormalTok{(screenName, statuses_day)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(screenName, statuses_day, }\DataTypeTok{label =}\NormalTok{ statuses_day)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most active Open Science MOOC-ers"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Average number of tweets per day"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{labels =} \ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{format}\NormalTok{(x, }\DataTypeTok{scientific =} \OtherTok{FALSE}\NormalTok{)) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{200}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/active-followers-1} \end{center}
+
+And yes, there is a correlation between the number of followers and the
+number of tweets, indicating that Open Science MOOC-ers with many
+followers also tend to tweet more often.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{log2}\NormalTok{(followersCount), }\DataTypeTok{y =} \KeywordTok{log2}\NormalTok{(statuses_day), }\DataTypeTok{color =}\NormalTok{ days)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"grey50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey90"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_color_continuous}\NormalTok{(}\StringTok{"Number of days since }\CharTok{\textbackslash{}n}\StringTok{account was created"}\NormalTok{, }\DataTypeTok{low =} \StringTok{"#91aac3"}\NormalTok{, }\DataTypeTok{high =} \StringTok{"#2C3E50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Number of followers (log2)"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Average number of tweets per day (log2)"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Correlation between the Open Science MOOC-ers followers count and tweets per day"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/correlation-1} \end{center}
+
+\subsection{Activities, interests, and
+opinions}\label{activities-interests-and-opinions}
+
+After these insights into the locations and demographics of the Open
+Science Twitter MOOC-ers, we now analyze the contents of their own
+profile descriptions.
+
+You guessed correctly, these unstrctured texts need some preprocessing
+as well. In this case, preprocessing translates to removing URLS,
+punctuation, non-alphabetic characters, leading and trailing whitespace
+as well as English, German, French, and Spanish stopwords. @-mentions
+and hashtags are intentionally kept since they are parts of the actual
+analysis. Profile descriptions originally consist of a sequence of
+strings and after cleaning them, I split them into single words. This
+process is called \emph{tokenization} in natural language processing.
+
+I also stemmed these preprocessed words using
+\href{http://www.cs.toronto.edu/~frank/csc2501/Readings/R2_Porter/Porter-1980.pdf}{Martin
+Porter's stemming algorithm} for collapsing words to a common root. This
+was done with the \texttt{SnowballC} package to help facilitate
+comparison between followers' vocabulary. Alternatively, I also tried
+lemmatization with \texttt{textstem}, that is removing inflectional
+endings and grouping words into a single base form (the so-called
+\emph{lemma}), but I was not too happy with the results. So in the end I
+just went with stemming.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Get German, French, and Spanish stop words}
+\NormalTok{stop_german <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{word =}\NormalTok{ stopwords}\OperatorTok{::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"de"}\NormalTok{), }\DataTypeTok{stringsAsFactors =}\NormalTok{ F)}
+\NormalTok{stop_french <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{word =}\NormalTok{ stopwords}\OperatorTok{::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"fr"}\NormalTok{), }\DataTypeTok{stringsAsFactors =}\NormalTok{ F)}
+\NormalTok{stop_espanol <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{word =}\NormalTok{ stopwords}\OperatorTok{::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"es"}\NormalTok{), }\DataTypeTok{stringsAsFactors =}\NormalTok{ F)}
+
+\CommentTok{# Specify pattern for tokenization}
+\NormalTok{## Regex adapted from https://pushpullfork.com/mining-twitter-data-tidy-text-tags/.}
+\NormalTok{pattern_words <-}\StringTok{ "([^A-Za-z_}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{d#@]|'(?![A-Za-z_}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{d#@]))"}
+
+\CommentTok{# Tidy descriptions}
+\NormalTok{desc_tidy <-}\StringTok{ }\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{description_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^$"}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\KeywordTok{trimws}\NormalTok{(description))) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{description_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"http}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, description_clean)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove URLS }
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(word, description_clean, }\DataTypeTok{token =} \StringTok{"regex"}\NormalTok{, }\DataTypeTok{pattern =}\NormalTok{ pattern_words) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\NormalTok{word }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_words}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_german}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_french}\OperatorTok{$}\NormalTok{word, }
+         \OperatorTok{!}\NormalTok{word }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_espanol}\OperatorTok{$}\NormalTok{word, }\KeywordTok{str_detect}\NormalTok{(word, }\StringTok{"[a-z]"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# remove stop words}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word_stem =} \KeywordTok{wordStem}\NormalTok{(word)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# stem words}
+\StringTok{  }\KeywordTok{select}\NormalTok{(word, word_stem, screenName)}
+\end{Highlighting}
+\end{Shaded}
+
+In a first step, I filtered the most common words the Open Science MOOC
+followers used in their profile descriptions. The plot below shows that
+words referring to all things science (e.g. \emph{research},
+\emph{scienc}, \emph{data}, \emph{scientist}), academia (e.g.
+\emph{phd}, \emph{univers}, \emph{student}) or non-academic professions
+(\emph{manag}, \emph{librarian}) are among the most common ones.
+Followers also seem to frequently include words describing their
+activities (e.g. \emph{learn}, \emph{develop}) or words pointing towards
+the principles of Open Science (\emph{\#opensci}, \emph{access}) in
+their profiles. Using a word cloud, I corroborate these findings by
+mapping the 100 most common words.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most common words in followers' descriptions}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word_stem, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{reorder}\NormalTok{(word_stem, n), }\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\DataTypeTok{label =} \StringTok{"Count of words in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1250}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/word-counts-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot word cloud}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word_stem, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{100}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{wordcloud2}\NormalTok{(}\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-ab26be86248c276def2a}{}
+
+The word cloud above shows that at least two well-known hashtags,
+\emph{\#opensci} and \emph{\#openaccess}, are prominently featured in
+the Open Science Twitter MOOC-ers profiles. Are there any other hashtags
+that are also frequently mentioned?
+
+Yes, indeed. Not surprisingly, \emph{\#openscience} comes first in this
+list (guilty as charged for having this in my own profile description as
+well), followed by \emph{\#openaccess} and \emph{\#scicomm}. Honorable
+mentions go to multiple other hashtags referring to the various branches
+of Open Science: \emph{\#opendata}, \emph{\#opensource}, \emph{\#oer} -
+which is short for \emph{Open Educational Resources} - and \emph{\#oa},
+denoting \emph{\#openaccess}.
+
+On a personal and admittedly slightly judgmental note, I'm proud of the
+Open Science MOOC-ers for mentioning \emph{\#rstats} more often than
+\emph{\#python}. Despite using both programming languages in my work, my
+heart still belongs to the former - come for the data (science), stay
+for the awe-inspiRing community. Though to be fair and to potentially
+burst my own bubble, there are other hashtags like \emph{\#pydata} that
+Pythonistas use alternately.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most common hashtags in MOOC-ers profiles}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(word, }\StringTok{"#}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# filter hashtags}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word =} \KeywordTok{reorder}\NormalTok{(word, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(word, n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most frequently used hashtags in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{250}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/hashtags-1} \end{center}
+
+In addition to the hashtags, I looked at the @-mentions in the Open
+Science MOOC-ers Twitter profiles as well. Among the most common
+mentions of the followers are (presumably) their respective past and
+current institutional affiliations. Here, the universities Oxford,
+Stanford and Maastricht were mentioned quite frequently.
+
+Other profiles include mentions of research fellowship or online
+programmes such as the
+\href{https://ec.europa.eu/programmes/horizon2020/en/h2020-section/marie-sklodowska-curie-actions}{Marie
+Skłodowska-Curie Actions} program of the EU (@mscactions), the
+\href{https://www.stifterverband.org/freies-wissen}{Fellows Freies
+Wissen} Open Science program funded by Wikimedia, the Stifterverband,
+and VolkswagenStiftung (@openscifellows) as well as the
+\href{https://foundation.mozilla.org/en/opportunity/mozilla-open-leaders/}{Mozilla
+Open Leaders} program by Mozilla (@mozopenleaders).
+
+Lastly, there are also mentions indicating affiliations with
+institutions which devote (parts of) their efforts to Open Science,
+namely \href{https://carpentries.org/}{The Carpentries}, an open global
+community for teaching foundational coding and data science skills, or
+\href{https://elifesciences.org/}{eLife}, an open-access journal for
+research in the life and biomedical sciences.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most common mentions in MOOC-ers profiles}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(word, }\StringTok{"@}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\CommentTok{# filter mentions}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word =} \KeywordTok{reorder}\NormalTok{(word, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(word, n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most frequently used mentions in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{15}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/mentions-1} \end{center}
+
+Up to this point, the content analysis relied on words as individual
+units. Since we're also interested in extracting co-occurring words or
+word sequences (examples might be \emph{phd student} or \emph{data
+science}), we now go one step further and analyze the relationship
+between two consecutive words by tokenizing the profile texts into pairs
+of adjacent words, called \emph{bigrams}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Clean descriptions (again) and get bigrams}
+\NormalTok{bigrams_tidy <-}\StringTok{ }\NormalTok{data_df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{description_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"^$"}\NormalTok{, }\OtherTok{NA}\NormalTok{, }\KeywordTok{trimws}\NormalTok{(description))) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{description_clean =} \KeywordTok{gsub}\NormalTok{(}\StringTok{"http}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{S+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s*"}\NormalTok{, }\StringTok{""}\NormalTok{, description_clean)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(bigram, description_clean, }\DataTypeTok{token =} \StringTok{"ngrams"}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{separate}\NormalTok{(bigram, }\KeywordTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\NormalTok{word1 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_words}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word1 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_german}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word1 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_french}\OperatorTok{$}\NormalTok{word, }
+         \OperatorTok{!}\NormalTok{word1 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_espanol}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word2 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_words}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word2 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_german}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word2 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_french}\OperatorTok{$}\NormalTok{word, }\OperatorTok{!}\NormalTok{word2 }\OperatorTok{%in%}\StringTok{ }\NormalTok{stop_espanol}\OperatorTok{$}\NormalTok{word)}
+\end{Highlighting}
+\end{Shaded}
+
+The following plot shows the bigrams that the Open Science MOOC-ers most
+frequently include in their Twitter profiles.
+
+While several bigrams seem to point to their academic and non-academic
+positions (e.g. \emph{phd student/candidate}, \emph{assistant
+professor}, \emph{data scientist}, \emph{associate professor},
+\emph{research fellow}, \emph{project manager}), other bigrams
+presumably describe the followers' professional interests, for instance
+\emph{scholarly communication}, \emph{machine learning}, \emph{data
+management} or \emph{digital humanities}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most common bigrams}
+\NormalTok{bigrams_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word1, word2, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{unite}\NormalTok{(bigram, }\KeywordTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{, }\StringTok{"word2"}\NormalTok{), }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(bigram }\OperatorTok{!=}\StringTok{ "NA NA"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{20}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{reorder}\NormalTok{(bigram, n), }\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most common bigrams in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{200}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/bigram-counts-1} \end{center}
+
+These bigram counts can also be transformed into a graph object and
+visualized as a bigram network, with the nodes and edges being defined
+as follows: The source is the first word and the target is the second
+word in a pair of consecutive words. Edges are the connections between
+two nodes whenever both words co-occurred at least ten times in the
+followers' profile descriptions. This threshold was chosen for visual
+reasons in order to make the depicted bigrams easier to read. The width
+of the edges reflects how common or rare each bigram is.
+
+Compared to the previous results, the bigram network allows for a deeper
+insight into the interests and activities of the Open Science Twitter
+MOOC-ers. As expected, common nodes in the network are \emph{research}
+(often followed by an academic position), \emph{data}, \emph{science}
+and \emph{phd}. Other pairs and triplets mention societal challenges
+such as \emph{human rights}, \emph{mental health} or \emph{global/public
+health}, indicating an increased awareness for social issues within the
+community. Some followers also make clear that they tweet from personal
+accounts and that the views they express are their own and retweets are
+not necessarily endorsements. But see for yourself:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Calculate bigram counts and transform into graph object}
+\NormalTok{bigram_graph <-}\StringTok{ }\NormalTok{bigrams_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word1, word2, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n }\OperatorTok{>}\StringTok{ }\DecValTok{10}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{graph_from_data_frame}\NormalTok{()}
+
+\CommentTok{# Plot bigram network}
+\KeywordTok{ggraph}\NormalTok{(bigram_graph, }\DataTypeTok{layout =} \StringTok{"nicely"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_edge_link}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{edge_alpha =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{width =}\NormalTok{ n), }\DataTypeTok{color =} \StringTok{"#91aac3"}\NormalTok{, }\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_node_point}\NormalTok{(}\DataTypeTok{color =}  \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.9}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_node_label}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ name), }\DataTypeTok{vjust =} \DecValTok{1}\NormalTok{, }\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{label.size =} \FloatTok{0.05}\NormalTok{, }
+                  \DataTypeTok{label.padding =} \KeywordTok{unit}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\StringTok{"lines"}\NormalTok{), }\DataTypeTok{label.r =} \FloatTok{0.05}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#ffffff66"}\NormalTok{, }
+                  \DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{repel =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Bigram network of the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Edge width relative to number of times each bigram occurs"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.text =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.title =} \KeywordTok{element_blank}\NormalTok{(), }
+                    \DataTypeTok{axis.ticks =} \KeywordTok{element_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/bigram-network-1} \end{center}
+
+The final part of this analysis deals with the sentiments conveyed in
+the Open Science MOOC-ers profile descriptions. The sentiment analysis
+below is based on a dictionary approach using Bing Liu et al.'s
+\href{https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html}{sentiment
+lexicon}. This dictionary contains approximately 6800 English sentiment
+words that were classified according to whether they have a positive or
+negative connotation, along with their assigned numerical values. These
+lists can then be used to match the words that followers use in their
+profile description with those included in the dictionary.
+
+The following plots show, first, the total number of positive and
+negative sentiments and, second, the sentiment distribution. As we can
+see here, the overall sentiment of the followers' profile descriptions
+is mostly positive, meaning that the texts contain more positively than
+negatively connotated words. Please note that I excluded the word
+\emph{endorsement} from the analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Remove the following terms}
+\NormalTok{senti_rm <-}\StringTok{ "endorsement"}
+
+\CommentTok{# Calculate and plot total sentiment scores (bing)}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%notin%}\StringTok{ }\NormalTok{senti_rm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"word"}\NormalTok{) }\OperatorTok{%>%}\StringTok{  }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(sentiment, n)) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill =}\NormalTok{ sentiment), }\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"#620000"}\NormalTok{,}\StringTok{"#006262"}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Negative"}\NormalTok{, }\StringTok{"Positive"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Count of positive and negative sentiments in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Sentiment lexicon by Bing Liu and collaborators"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2000}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{viz_theme }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/sentiment-counts-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot sentiment distribution}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%notin%}\StringTok{ }\NormalTok{senti_rm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"word"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(screenName, word, sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(screenName, sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{sum =} \KeywordTok{sum}\NormalTok{(n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, sum, }\DataTypeTok{fill =} \DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{difference =}\NormalTok{ positive }\OperatorTok{-}\StringTok{ }\NormalTok{negative) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ difference)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\DataTypeTok{color =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#2c3e50"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Sentiment"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Density"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Distribution of sentiments in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Sentiment lexicon by Bing Liu and collaborators"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{1.6}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/sentiment-distribution-1} \end{center}
+
+But which words are actually classified as positive and negative? The
+following overview shows that several of the words the Open Science
+MOOC-ers presumably use to describe both themselves (e.g.
+\emph{enthusiast}, \emph{advocate}, \emph{lover}) and their preferences
+and characteristics (e.g. \emph{love(s)}, \emph{passionate},
+\emph{proud}) are among the most frequently used positive words in their
+profile descriptions. Negative words include for instance the word
+\emph{cancer}, which may either indicate the respective followers' own
+research interests or possibly refer to their own medical history.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot most common positive and negative words}
+\NormalTok{desc_tidy }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%notin%}\StringTok{ }\NormalTok{senti_rm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"word"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, sentiment, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{10}\NormalTok{, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word =} \KeywordTok{reorder}\NormalTok{(word, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(word, n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{'identity'}\NormalTok{, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill =}\NormalTok{ sentiment), }\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_manual}\NormalTok{(}\DataTypeTok{name =} \StringTok{"Sentiment"}\NormalTok{, }
+                    \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Negative"}\NormalTok{, }\StringTok{"Positive"}\NormalTok{), }
+                    \DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"negative"}\NormalTok{ =}\StringTok{ "#620000"}\NormalTok{, }\StringTok{"positive"}\NormalTok{ =}\StringTok{ "#006262"}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Most common positive and negative words in the Open Science MOOC-ers profile descriptions"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Sentiment lexicon by Bing Liu and collaborators"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\NormalTok{viz_theme }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{150}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/pos-neg-word-counts-1} \end{center}
+
+To get a broader picture of the most common positive and negative words,
+they can also be visualize in a comparison cloud.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot comparison cloud}
+\NormalTok{desc_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"word"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, sentiment, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{acast}\NormalTok{(word }\OperatorTok{~}\StringTok{ }\NormalTok{sentiment, }\DataTypeTok{value.var =} \StringTok{"n"}\NormalTok{, }\DataTypeTok{fill =} \DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{comparison.cloud}\NormalTok{(}\DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{"#620000"}\NormalTok{, }\StringTok{"#006262"}\NormalTok{),}
+                   \DataTypeTok{max.words =} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{OpenScienceMOOC-follower-analysis_files/figure-latex/comparison-cloud-1} \end{center}
+
+\subsection{Conclusion}\label{conclusion}
+
+So what does this analysis tell us about the Open Science MOOC Twitter
+community? The findings demonstrate that a substantial number of
+followers of the official account are based in larger cities across
+Western Europe and North America. Hence, there is some evidence for the
+Open Science Twitter bubble being geographically clustered. Still, the
+Open Science MOOC-ers seem to be a diverse and inclusive community
+overall as both genders are represented almost equally and most
+followers tweet from unverified personal accounts. When it comes to the
+professional activities of the community members, they tend to either be
+PhD students, hold more senior academic positions or seem to work in
+closely related fields such as data science or science communication.
+Moreover, several followers are officially affiliated with universities,
+others with national and international Open Science fellowship programs
+or organization promoting Open Science. Many followers also actively
+spread the values and principles of Open Science by including hashtags
+referring to the various branches of Open Science - including Open
+Access, Open Data, Open Source, and Open Educational Resources - in
+their profile descriptions, which mostly convey positive sentiments.
+
+Taken together, the empirical results strongly indicate that the Open
+Science Twitter MOOC-ers are indeed a bunch of enthusiastic, diverse,
+and highly-educated science afficionados who dedicate their time and
+effort to actively advocate and advance Open Science.
+
+
+\end{document}
