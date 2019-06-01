@@ -1,0 +1,12 @@
+# RStudio files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.httr-oauth
+*.DS_Store
+*.Rproj
+
+# Data
+opensciencemooc_followers.rds
+opensciencemooc_friends.rds
