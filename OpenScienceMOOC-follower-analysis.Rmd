@@ -5,7 +5,8 @@ author:
 - "dataplanes.org | @DataPlanes"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document: default
+  pdf_document:
+    keep_tex: true
   html_document: default
 always_allow_html: yes
 ---
@@ -22,11 +23,11 @@ After realizing that a) I could not get my hands on our Slack analytics due to t
 
 In this blog post, I am now going to analyze this data in order to answer the following questions:
 
-1) Is there an overlap between the Open Science MOOC's Twitter followers and friends? Who should be immediately unfollowed for not following back?*
-2) Where are the Open Science MOOC's twitter followers based? Is there any evidence for a geographically concentrated Open Science Twitter bubble?
-3) What about diversity among the followers? Does the Open Science MOOC keep its promise of being an inclusive and diverse platform?
-4) Who are the most influential and active followers? Could they potentially start a revolution, take over the Twitter community, and throw Jon off the Open Science throne?
-5) What do the followers state in their own profile descriptions? Which institutions are they affiliated with? Which opinions do they express? And last but certainly not least: Do their own texts say anything meaningful about the interests and research activities of the Open Science Twitter MOOC-ers (spoiler alert: yes)?
+(1) Is there an overlap between the Open Science MOOC's Twitter followers and friends? Who should be immediately unfollowed for not following back?*
+(2) Where are the Open Science MOOC's twitter followers based? Is there any evidence for a geographically concentrated Open Science Twitter bubble?
+(3) What about diversity among the followers? Does the Open Science MOOC keep its promise of being an inclusive and diverse platform?
+(4) Who are the most influential and active followers? Could they potentially start a revolution, take over the Twitter community, and throw Jon off the Open Science throne?
+(5) What do the followers state in their own profile descriptions? Which institutions are they affiliated with? Which opinions do they express? And last but certainly not least: Do their own texts say anything meaningful about the interests and research activities of the Open Science Twitter MOOC-ers (spoiler alert: yes)?
 
 *&ast;Just kidding, of course I skipped this part. But make sure to follow the Open Science MOOC, one never knows what the future might bring... Just kidding again.*
 
@@ -37,7 +38,7 @@ As the old saying goes, every analysis needs its data. While I generally prefer 
 And while `ggplot2` - especially when combined with `ggthemes` - comes with beautiful themes by default, I most often cannot resist to create a custom theme for each project. With the colour scheme below, I tried to match the visual appearance of Shirin's follower analysis. And yes, it would have been easier, albeit less fun, if I had followed her example and simply used `tidyquant`.
 
 ```{r knitr, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = TRUE, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 6, (root.dir = paste0(rprojroot::find_rstudio_root_file(), "/Files")))
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, warning = FALSE, message = FALSE, tidy = TRUE, dev = "png", (root.dir = paste0(rprojroot::find_rstudio_root_file(), "/Files")))
 ```
 
 ```{r setup}
@@ -126,7 +127,7 @@ relations_df %>%
 
 After this first overview of the Open MOOC-ers Twitter community, let us dive deeper into the whereabouts of the followers. For this purpose, we can use the locations users provide in their Twitter profiles. Not all of the followers did this, but the available information proves to be sufficient for a reasonably accurate overview.
 
-Prior to mapping the locations, however, the unstructured text data needed some basic cleaning by removing mentions, hashtags, and strings either consisting of only one character or containing numbers. In addition, I removed all punctuation except for commas, since locations, if specified correctly (sorry to disappoint you, Jon, *Jurassic Park* is not a valid location yet [JT edit: Emphasis on "yet"]), are displayed in the *city, country* format. Lastly, I trimmed both leading and trailing whitespace and converted the preprocessed locations to lower case.
+Prior to mapping the locations, however, the unstructured text data needed some basic cleaning by removing mentions, hashtags, and strings either consisting of only one character or containing numbers. In addition, I removed all punctuation except for commas, since locations, if specified correctly (sorry to disappoint you, Jon, *Jurassic Park* is not a valid location yet [Jon's comment: Emphasis on "yet"]), are displayed in the *city, country* format. Lastly, I trimmed both leading and trailing whitespace and converted the preprocessed locations to lower case.
 
 ```{r geocoding}
 # Clean location
@@ -166,7 +167,7 @@ data_df %>%
 
 To investigate this interesting finding further, I geocoded all available locations using the [OpenStreetMap Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) API. The `geocode_OSM()` function of the `tmaptools` package is one of the available options for geocoding a location to its coordinates; alternatives are `ggmap` or `opencage`. When setting `as.data.frame = TRUE`, `geocode_OSM()` returns a data frame containing the latitude and longitude of each location. After obtaining the results, I removed both unspecific (e.g. administrative boundaries) and overly specific locations (e.g. localities or amenities) by filtering all observations that match the `type == city` condition.
 
-Fun fact: `NA`, which indicates missing values in R, apparently translates to *Norge, Ytterbyvegen, Namsos, Trøndelag, 7810, Norge* when geocoding it with OpenStreetMap Nominatim. For a brief moment, I was beyond excited to discover a hidden tribe of Open Science MOOC-ers in this small Norwegian town with oh so beautiful fjords and mountains, but no, this was nothing but a false positive.
+Fun fact: `NA`, which indicates missing values in R, apparently translates to *Norge, Ytterbyvegen, Namsos, Trøndelag, 7810, Norge* when geocoding it with OpenStreetMap Nominatim. For a brief moment, I was beyond excited to discover a hidden tribe of Open Science MOOC-ers in this small Norwegian town with oh so beautiful fjords and mountains, but no, this turned out to be nothing but a false positive.
 
 ```{r, eval = FALSE}
 # Geocode cleaned locations and save results
@@ -245,7 +246,7 @@ leaflet(data_df, width = "100%") %>%
 
 After tracking down their locations, I was interested in the gender diversity of the Open Science MOOC followers since one of its objectives is to be an inclusive and welcoming platform for people of all nationalities and genders.
 
-"How does this work with Twitter data where no information on users' genders is available?" you might ask. A while ago I worked on a project using bibliometric data to analyze gender differences in computational social science publications (that in the end sadly never saw the light of the day) and stumbled upon [genderize.io](https://genderize.io/). Their API draws on a database containing over 200,000 distinct names from 79 countries and 89 languages which were obtained from user profiles across various social networks to determine people's gender based on their first name. While this approach only allows for qualified guesses rather than perfectly robust results, it still provides a rough estimate of the gender distribution among the Open Science MOOC-ers.
+"How does this work with Twitter data where no information on users' genders is available?" you might ask. Excellent question. A while ago I worked on a project using bibliometric data to analyze gender differences in computational social science publications (that in the end sadly never saw the light of the day) and stumbled upon [genderize.io](https://genderize.io/). Their API draws on a database containing over 200,000 distinct names from 79 countries and 89 languages which were obtained from user profiles across various social networks to determine people's gender based on their first name. While this approach only allows for qualified guesses rather than perfectly robust results, it still provides a rough estimate of the gender distribution among the Open Science MOOC-ers.
 
 Before determining each followers gender, I preprocessed all names by again removing hashtags, mentions, punctuation, numbers, and non-ASCII characters - yes, people on Twitter are amazingly creative when it comes to their online identities - as well as academic titles such as Dr, PhD or Prof.
 
@@ -314,10 +315,10 @@ followers_gender %>%
 To get a better picture of how inclusive the Open Science MOOC Twitter community is, I additionally classified all followers based on their respective account status. This approach was adapted from a blog post on [analyzing social movements on Twitter](https://correlaid.org/blog/we2-twitter-analysis/) that I co-wrote with my fellow CorrelAider [Konstantin Gavras](http://konstantin.gavras.de/) for the European elections in May 2019.
 
 All followers of the Open Science MOOC were classified as follows:
-1. Verified account: Account is officially verified by Twitter (i.e. of public interest)
-2. Influencer: Account has at least 500 followers and at least thrice as many followers than friends
-3. Verified influencer: Account is both officially verified and classified as an influencer
-4. Personal account: Account is neither verified nor classified as an influencer
+(1) Verified account: Account is officially verified by Twitter (i.e. of public interest)
+(2) Influencer: Account has at least 500 followers and at least thrice as many followers than friends
+(3) Verified influencer: Account is both officially verified and classified as an influencer
+(4) Personal account: Account is neither verified nor classified as an influencer
 
 As can be seen in the plot below, most accounts are unverified personal ones, making the Open Science MOOC Twitter community a very inclusive digital space.
 
@@ -451,7 +452,7 @@ The word cloud above shows that at least two well-known hashtags, *\#opensci* an
 
 Yes, indeed. Not surprisingly, *\#openscience* comes first in this list (guilty as charged for having this in my own profile description as well), followed by *\#openaccess* and *\#scicomm*. Honorable mentions go to multiple other hashtags referring to the various branches of Open Science: *\#opendata*, *\#opensource*, *\#oer* - which is short for *Open Educational Resources* - and *\#oa*, denoting *\#openaccess*.
 
-On a personal and admittedly slightly judgmental note, I'm proud of the Open Science MOOC-ers for mentioning *\#rstats* more often than *\#python*. Despite using both programming languages in my work, my heart still belongs to the former - come for the data (science), stay for the awe-inspiRing community. Though to be fair and to potentially burst my own bubble, there are other hashtags like *\#pydata* that Pythonistas use alternately.
+On a personal and admittedly slightly judgmental note, I'm proud of the Open Science MOOC-ers for mentioning *\#rstats* more often than *\#python*. Despite using both programming languages in my work, my heart still belongs to the former - come for the data (science), stay for the awe-inspiRing community. Though to be fair and potentially burst my own bubble, there are other hashtags like *\#pydata* that Pythonistas use alternately.
 
 ```{r hashtags, fig.align = "center", fig.width = 10}
 # Plot most common hashtags in MOOC-ers profiles
@@ -545,7 +546,6 @@ The final part of this analysis deals with the sentiments conveyed in the Open S
 
 The following plots show, first, the total number of positive and negative sentiments and, second, the sentiment distribution. As we can see here, the overall sentiment of the followers' profile descriptions is mostly positive, meaning that the texts contain more positively than negatively connotated words. Please note that I excluded the word *endorsement* from the analysis.
 
-
 ```{r sentiment-counts, fig.align = "center", fig.width = 10}
 # Remove the following terms
 senti_rm <- "endorsement"
@@ -579,7 +579,7 @@ desc_tidy %>%
   viz_theme
 ```
 
-But which words are actually classified as positive and negative? The following overview shows that several of the words the Open Science MOOC-ers presumably use to describe both themselves (e.g. *enthusiast*, *advocate*, *lover*) and their preferences and characteristics (e.g. *love(s)*, *passionate*, *proud*) are among the most frequently used positive words in their profile descriptions. Negative words include for instance the word *cancer*, which may either indicate the respective followers' own research interests or possibly refer to their own medical history.
+But which words are actually classified as positive and negative? The following overview shows that several of the words the Open Science MOOC-ers presumably use to describe both themselves (e.g. *enthusiast*, *advocate*, *lover*) and their preferences and characteristics (e.g. *love(s)*, *passionate*, *proud*) are among the most frequently used positive words in their profile descriptions. Negative words include for instance the word *cancer*, which may either indicate the respective followers' own research interests, zodicac signs or possibly refer to their own medical history.
 
 ```{r pos-neg-word-counts, fig.align = "center", fig.width = 10}
 # Plot most common positive and negative words
@@ -617,3 +617,7 @@ desc_tidy %>%
 So what does this analysis tell us about the Open Science MOOC Twitter community? The findings demonstrate that a substantial number of followers of the official account are based in larger cities across Western Europe and North America. Hence, there is some evidence for the Open Science Twitter bubble being geographically clustered. Still, the Open Science MOOC-ers seem to be a diverse and inclusive community overall as both genders are represented almost equally and most followers tweet from unverified personal accounts. When it comes to the professional activities of the community members, they tend to either be PhD students, hold more senior academic positions or seem to work in closely related fields such as data science or science communication. Moreover, several followers are officially affiliated with universities, others with national and international Open Science fellowship programs or organization promoting Open Science. Many followers also actively spread the values and principles of Open Science by including hashtags referring to the various branches of Open Science - including Open Access, Open Data, Open Source, and Open Educational Resources - in their profile descriptions, which mostly convey positive sentiments.
 
 Taken together, the empirical results strongly indicate that the Open Science Twitter MOOC-ers are indeed a bunch of enthusiastic, diverse, and highly-educated science afficionados who dedicate their time and effort to actively advocate and advance Open Science.
+
+*Acknowledgements:* Thanks to [Jon Tennant](http://fossilsandshit.com/) for providing valuable input and diligent proofreading skills for this blog post.
+
+*Replication, replication:* GDPR approved code and data can be found [here](https://github.com/lhehnke/opensciencemooc-followers).
