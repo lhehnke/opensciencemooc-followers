@@ -38,7 +38,7 @@ As the old saying goes, every analysis needs its data. While I generally prefer 
 And while `ggplot2` - especially when combined with `ggthemes` - comes with beautiful themes by default, I most often cannot resist to create a custom theme for each project. With the colour scheme below, I tried to match the visual appearance of Shirin's follower analysis. And yes, it would have been easier, albeit less fun, if I had followed her example and simply used `tidyquant`.
 
 ```{r knitr, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = TRUE, warning = FALSE, message = FALSE, tidy = TRUE, dev = "png", (root.dir = paste0(rprojroot::find_rstudio_root_file(), "/Files")))
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, warning = FALSE, message = FALSE, tidy = TRUE, fig.width = 9, fig.height = 6, dev = "png", (root.dir = paste0(rprojroot::find_rstudio_root_file(), "/Files")))
 ```
 
 ```{r setup}
